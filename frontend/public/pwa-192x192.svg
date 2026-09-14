@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192" fill="none">
+  <rect width="192" height="192" rx="40" fill="#0f172a"/>
+  <rect x="8" y="8" width="176" height="176" rx="32" fill="url(#pwa_grad)" stroke="#6366f1" stroke-width="2"/>
+  <path fill="#ffffff" d="M103.784 179.752c-2.656 3.38-8.084 1.5-8.084-2.792V135.75a9.04 9.04 0 0 0-9.048-9.048H41.148c-3.68 0-5.824-4.16-3.68-7.152l29.92-41.884c4.28-5.988 0-14.312-7.368-14.312H4.948c-3.68 0-5.824-4.16-3.68-7.152L40.052 1.896c.856-1.188 2.224-1.896 3.68-1.896h115.576c3.68 0 5.824 4.16 3.68 7.152l-29.92 41.884c-4.28 5.992 0 14.316 7.368 14.316h45.508c3.772 0 5.892 4.352 3.56 7.32L103.788 179.76z" transform="translate(24, 24) scale(0.75)"/>
+  <defs>
+    <linearGradient id="pwa_grad" x1="0" y1="0" x2="192" y2="192" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1e1b4b"/>
+      <stop offset="1" stop-color="#312e81"/>
+    </linearGradient>
+  </defs>
+</svg>
