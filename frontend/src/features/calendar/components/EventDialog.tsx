@@ -249,10 +249,10 @@ export function EventDialog({
       milestoneId: data.milestoneId ? data.milestoneId : null,
       reminder: data.reminderEnabled
         ? {
-            enabled: true,
-            minutesBefore: Number(data.reminderMinutes || 15),
-            reminderType: "POPUP",
-          }
+          enabled: true,
+          minutesBefore: Number(data.reminderMinutes || 15),
+          reminderType: "POPUP",
+        }
         : null,
     };
 
@@ -404,11 +404,10 @@ export function EventDialog({
                     type="button"
                     onClick={() => setValue("color", c.value)}
                     style={{ backgroundColor: c.value }}
-                    className={`h-6 w-6 rounded-full transition-transform ${
-                      selectedColor === c.value
+                    className={`h-6 w-6 rounded-full transition-transform ${selectedColor === c.value
                         ? "ring-2 ring-offset-2 ring-primary scale-110"
                         : "opacity-80 hover:opacity-100"
-                    }`}
+                      }`}
                     title={c.name}
                   />
                 ))}

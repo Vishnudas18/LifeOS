@@ -72,7 +72,22 @@ export function Sidebar({
           <li key={item.href}>
             <NavLink
               to={item.href}
-              onClick={onCloseMobile}
+              end={item.href === "/"}
+              onClick={(event) => {
+                if (
+                  event.button !== 0 ||
+                  event.metaKey ||
+                  event.ctrlKey ||
+                  event.shiftKey ||
+                  event.altKey
+                ) {
+                  return;
+                }
+
+                event.preventDefault();
+                onCloseMobile();
+                navigate(item.href);
+              }}
               className={({ isActive }) =>
                 cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all cursor-pointer select-none",

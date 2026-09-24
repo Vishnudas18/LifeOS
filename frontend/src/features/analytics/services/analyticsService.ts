@@ -1,6 +1,7 @@
 import { apiClient } from "@/services/apiClient";
 import type {
   OverviewAnalytics,
+  DashboardAnalytics,
   ProductivityAnalytics,
   FinancialAnalytics,
   GoalAnalytics,
@@ -18,6 +19,15 @@ function buildQueryString(start?: string, end?: string): string {
 }
 
 export const analyticsService = {
+  async getDashboard(todayStart: string, monthStart: string): Promise<DashboardAnalytics> {
+    const params = new URLSearchParams({ todayStart, monthStart });
+    const res = await apiClient<DashboardAnalytics>(`/analytics/dashboard?${params.toString()}`);
+    if (!res.success || !res.data) {
+      throw new Error(res.message || "Failed to fetch dashboard data");
+    }
+    return res.data;
+  },
+
   async getOverview(start?: string, end?: string): Promise<OverviewAnalytics> {
     const res = await apiClient<OverviewAnalytics>(`/analytics/overview${buildQueryString(start, end)}`);
     if (!res.success || !res.data) {

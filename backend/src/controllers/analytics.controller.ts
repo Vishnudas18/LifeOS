@@ -1,10 +1,28 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedRequest } from "../middlewares/auth.middleware.js";
 import { AnalyticsService } from "../services/analytics.service.js";
-import { dateRangeQuerySchema } from "../validators/analytics.validator.js";
+import {
+  dashboardDateRangeQuerySchema,
+  dateRangeQuerySchema,
+} from "../validators/analytics.validator.js";
 import { sendSuccess } from "../utils/response.js";
 
 const analyticsService = new AnalyticsService();
+
+export async function getDashboardController(
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const userId = req.user!.userId;
+    const { todayStart, monthStart } = dashboardDateRangeQuerySchema.parse(req.query);
+    const data = await analyticsService.getDashboard(userId, todayStart, monthStart);
+    sendSuccess(res, data, "Dashboard data retrieved successfully");
+  } catch (error) {
+    next(error);
+  }
+}
 
 export async function getOverviewController(
   req: AuthenticatedRequest,

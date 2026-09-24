@@ -2,6 +2,7 @@ import { AnalyticsRepository } from "../repositories/analytics.repository.js";
 import { generateInsights } from "./insightEngine.service.js";
 import {
   MetricComparison,
+  DashboardAnalyticsResponse,
   OverviewAnalyticsResponse,
   TrendDirection,
 } from "../types/analytics.types.js";
@@ -121,6 +122,65 @@ export class AnalyticsService {
       averageFocusSeconds: this.calculateComparison(currFocus.averageSessionSeconds, prevFocus.averageSessionSeconds),
       calendarEvents: this.calculateComparison(currCal.totalEvents, prevCal.totalEvents),
       completedCalendarEvents: this.calculateComparison(currCal.completedEvents, prevCal.completedEvents),
+    };
+  }
+
+  async getDashboard(
+    userId: string,
+    todayStartStr?: string,
+    monthStartStr?: string
+  ): Promise<DashboardAnalyticsResponse> {
+    const now = new Date();
+    const todayStart = todayStartStr ? new Date(todayStartStr) : new Date(now);
+    const monthStart = monthStartStr ? new Date(monthStartStr) : new Date(now);
+
+    if (isNaN(todayStart.getTime()) || isNaN(monthStart.getTime())) {
+      throw new AnalyticsError("Invalid dashboard date range", 400);
+    }
+
+    if (!todayStartStr) {
+      todayStart.setHours(0, 0, 0, 0);
+    }
+    if (!monthStartStr) {
+      monthStart.setDate(1);
+      monthStart.setHours(0, 0, 0, 0);
+    }
+
+    const [todayTasks, monthlyFinance, goalStats, focusStats, upcomingTasks] = await Promise.all([
+      this.repository.getTasksStats(userId, todayStart, now),
+      this.repository.getTransactionsStats(userId, monthStart, now),
+      this.repository.getGoalsStats(userId, monthStart, now),
+      this.repository.getFocusStats(userId, todayStart, now),
+      this.repository.getUpcomingTasks(userId, todayStart),
+    ]);
+
+    const pending = todayTasks.tasksByStatus
+      .filter((task) => task.status !== "COMPLETED")
+      .reduce((total, task) => total + task.count, 0);
+
+    return {
+      range: {
+        todayStart: todayStart.toISOString(),
+        monthStart: monthStart.toISOString(),
+        end: now.toISOString(),
+      },
+      tasks: {
+        pending,
+        createdToday: todayTasks.tasksCreated,
+      },
+      finance: {
+        totalExpenses: monthlyFinance.totalExpenses,
+        totalIncome: monthlyFinance.totalIncome,
+      },
+      goals: {
+        active: goalStats.activeGoals,
+        averageProgress: goalStats.averageProgress,
+      },
+      focus: {
+        totalFocusSeconds: focusStats.totalFocusSeconds,
+        completedSessions: focusStats.completedSessions,
+      },
+      upcomingTasks,
     };
   }
 

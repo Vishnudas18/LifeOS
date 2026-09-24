@@ -181,6 +181,17 @@ const swaggerDocument = {
         responses: { 200: { description: "Active session info" } },
       },
     },
+    "/analytics/dashboard": {
+      get: {
+        summary: "Get live dashboard metrics and upcoming tasks",
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          { name: "todayStart", in: "query", schema: { type: "string", format: "date-time" } },
+          { name: "monthStart", in: "query", schema: { type: "string", format: "date-time" } },
+        ],
+        responses: { 200: { description: "Dashboard data" } },
+      },
+    },
     "/analytics/overview": {
       get: {
         summary: "Get unified dashboard analytics overview",

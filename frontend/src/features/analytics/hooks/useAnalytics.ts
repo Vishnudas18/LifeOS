@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { analyticsService } from "../services/analyticsService";
 import type {
   OverviewAnalytics,
+  DashboardAnalytics,
   ProductivityAnalytics,
   FinancialAnalytics,
   GoalAnalytics,
@@ -9,6 +10,13 @@ import type {
   CalendarAnalytics,
   InsightCardData,
 } from "../types/analytics";
+
+export function useDashboardAnalytics(todayStart: string, monthStart: string) {
+  return useQuery<DashboardAnalytics, Error>({
+    queryKey: ["dashboard-analytics", todayStart, monthStart],
+    queryFn: () => analyticsService.getDashboard(todayStart, monthStart),
+  });
+}
 
 export function useAnalyticsOverview(start?: string, end?: string) {
   return useQuery<OverviewAnalytics, Error>({

@@ -56,6 +56,37 @@ export interface OverviewAnalytics {
   completedCalendarEvents: MetricComparison;
 }
 
+export interface DashboardAnalytics {
+  range: {
+    todayStart: string;
+    monthStart: string;
+    end: string;
+  };
+  tasks: {
+    pending: number;
+    createdToday: number;
+  };
+  finance: {
+    totalExpenses: number;
+    totalIncome: number;
+  };
+  goals: {
+    active: number;
+    averageProgress: number;
+  };
+  focus: {
+    totalFocusSeconds: number;
+    completedSessions: number;
+  };
+  upcomingTasks: Array<{
+    id: string;
+    title: string;
+    dueDate: string;
+    priority: string;
+    status: string;
+  }>;
+}
+
 export interface ProductivityAnalytics {
   tasksCreated: number;
   tasksCompleted: number;

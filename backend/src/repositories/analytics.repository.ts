@@ -8,6 +8,27 @@ import { FocusSession } from "../models/FocusSession.js";
 import { FocusStatus } from "../types/focus.types.js";
 
 export class AnalyticsRepository {
+  async getUpcomingTasks(userId: string, startDate: Date, limit = 5) {
+    const userObjId = new Types.ObjectId(userId);
+    const tasks = await Task.find({
+      userId: userObjId,
+      status: { $ne: "COMPLETED" },
+      dueDate: { $gte: startDate },
+    })
+      .sort({ dueDate: 1, priority: -1 })
+      .limit(limit)
+      .select("title dueDate priority status")
+      .lean();
+
+    return tasks.map((task) => ({
+      id: task._id.toString(),
+      title: task.title,
+      dueDate: task.dueDate!.toISOString(),
+      priority: task.priority,
+      status: task.status,
+    }));
+  }
+
   async getTasksStats(userId: string, startDate: Date, endDate: Date) {
     const userObjId = new Types.ObjectId(userId);
 

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authenticate } from "../middlewares/auth.middleware.js";
 import {
+  getDashboardController,
   getOverviewController,
   getProductivityAnalyticsController,
   getFinancialAnalyticsController,
@@ -18,6 +19,7 @@ const analyticsRouter = Router();
 analyticsRouter.use(authenticate);
 analyticsRouter.use(searchAnalyticsLimiter);
 
+analyticsRouter.get("/dashboard", getDashboardController);
 analyticsRouter.get("/overview", getOverviewController);
 analyticsRouter.get("/productivity", getProductivityAnalyticsController);
 analyticsRouter.get("/financial", getFinancialAnalyticsController);

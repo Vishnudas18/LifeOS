@@ -135,3 +135,34 @@ export interface CalendarAnalyticsResponse {
 export interface InsightsResponse {
   insights: InsightCard[];
 }
+
+export interface DashboardAnalyticsResponse {
+  range: {
+    todayStart: string;
+    monthStart: string;
+    end: string;
+  };
+  tasks: {
+    pending: number;
+    createdToday: number;
+  };
+  finance: {
+    totalExpenses: number;
+    totalIncome: number;
+  };
+  goals: {
+    active: number;
+    averageProgress: number;
+  };
+  focus: {
+    totalFocusSeconds: number;
+    completedSessions: number;
+  };
+  upcomingTasks: Array<{
+    id: string;
+    title: string;
+    dueDate: string;
+    priority: string;
+    status: string;
+  }>;
+}
